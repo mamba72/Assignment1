@@ -1,2 +1,7 @@
 # Assignment1
 DNA string analyzer
+
+Sources:
+1. I got my random DNA sequences from this website https://www.bioinformatics.org/sms2/random_dna.html
+2. http://www.fredosaurus.com/notes-cpp/io/readtextfile.html
+3. 
