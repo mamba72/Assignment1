@@ -79,6 +79,8 @@ int main(int argc, char** argv)
 		totalChars--;
 	}
 
+	cout << "Full file text: \n" << fullFileText << endl;
+
 	cout << "Ensure Counting Chars is even " << totalChars << "\n";
 
 	//count every pair of nucleotides (bigrams)
@@ -86,7 +88,8 @@ int main(int argc, char** argv)
 	{
 		//cout << "I = " << i << endl;
 		string currentPair = " ";
-		currentPair = "" + fullFileText[i] + fullFileText[i+1];
+		currentPair = string(1, fullFileText[i]);
+		currentPair += string(1, fullFileText[i + 1]);
 
 		cout << "Current Pair: " << currentPair << endl;
 
@@ -161,6 +164,7 @@ string ReadFile(string fileName)
 	//go through the file getting each line one at a time and adding them to the full string
 	while (std::getline(inputFile, fileLine))
 	{
+		totalLineCount++;
 		fullFileText = fullFileText + fileLine + "\n";
 	}
 
