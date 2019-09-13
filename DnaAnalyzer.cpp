@@ -13,8 +13,9 @@ string PrintSummary();
 void CountIndividualChars(string fileText);
 void CountBigrams(string fileText);
 float CalcVariance(string fileName);
-void OutputToFile(string fileName);
+void OutputToFile(string fileInputName);
 float CalcGaussianDistribution(float mean, float variance);
+void ResetCounterVars();
 
 //my counting variables for keeping track of the amount of each nucliotide and bigram
 int numA = 0, numT = 0, numC = 0, numG = 0;
@@ -32,6 +33,7 @@ string fullFileText = "";
 
 //this is the variable that will be reading the file
 ifstream inputFile;
+ofstream outFile;
 
 int main(int argc, char** argv)
 {
@@ -46,6 +48,10 @@ int main(int argc, char** argv)
 
 	//read the file and get the string of the contents
 	//fullFileText = ReadFile(argv[1]);
+
+	outFile.open("StephenWhite.txt");
+
+	outFile << "Stephen White\n002323381\nData Structures Section 1\nAssignment 1: C++ Review" << endl << endl;
 
 	char stay = 'y';
 
@@ -63,7 +69,7 @@ int main(int argc, char** argv)
 		if (!inputFile)
 		{
 			cout << "We were unable to open that file.\nTry a different one or close it before asking us to open it.\n";
-			exit(1);
+			continue;
 		}
 
 		string fullFileText;
@@ -115,13 +121,16 @@ int main(int argc, char** argv)
 		//print everything
 		//PrintSummary();
 
-		OutputToFile("StephenWhite.txt");
+		OutputToFile(enteredFileName);
 
 		cout << "Would you like to go again? (y or n)" << endl;
 		cin >> stay;
 		
+		//to ensure that the amounts counted from the previous run are not carried over into the next
+		ResetCounterVars();
+
 	}
-	cout << "Goodbye!!!!\n";
+	cout << "Goodbye!!!! :)\n";
 	return 0;
 }
 
@@ -323,12 +332,15 @@ float CalcGaussianDistribution(float mean, float variance)
 }
 
 //Write all the stuffs to file
-void OutputToFile(string fileName)
+void OutputToFile(string fileInputName)
 {
-	ofstream outFile;
+	/*
 	outFile.open(fileName);
 
 	outFile << "Stephen White\n002323381\nData Structures Section 1\nAssignment 1: C++ Review" << endl <<endl;
+	*/
+	//print the name of the file thats being read to better be able to separate the sections in the output file
+	outFile << "File being analyzed: " << fileInputName << endl;
 
 	outFile << "Total Number of characters: " << totalChars << endl;
 	outFile << "Total number of bigrams: " << totalBigrams << endl;
@@ -346,7 +358,7 @@ void OutputToFile(string fileName)
 
 	outFile << "Average line length: " << lineLengthMean << endl;
 	outFile << "Line length variance: " << lineVariance << endl;
-	outFile << "Standard deviatoin: " << lineStdDeviation << endl;
+	outFile << "Standard deviation: " << lineStdDeviation << endl;
 
 	outFile << "Probability of A: " << ((float)numA / (float)totalChars) << "\tC:" << ((float)numC / (float)totalChars) << "\tG:" << ((float)numG / (float)totalChars) << "\tT:" << ((float)numT / (float)totalChars) << endl;
 	outFile << "Probability of AA: " << ((float)numAA / (float)totalChars) << "\tAC:" << ((float)numAC / (float)totalChars) << "\tAG:" << ((float)numAG / (float)totalChars) << "\tAT:" << ((float)numAT / (float)totalChars) << endl;
@@ -386,9 +398,27 @@ void OutputToFile(string fileName)
 		outFile << line << endl;
 	}
 
+	outFile << endl << endl << endl;
 
 
-	outFile.flush();
-	outFile.close();
+	//no need to flush and close because this happens upon destruction anyways
+	//outFile.flush();
+	//outFile.close();
 	
+}
+
+void ResetCounterVars()
+{
+	numA = 0, numT = 0, numC = 0, numG = 0;
+	numGC = 0, numGT = 0, numGA = 0, numGG = 0;
+	numAA = 0, numAC = 0, numAG = 0, numAT = 0;
+	numCA = 0, numCC = 0, numCG = 0, numCT = 0;
+	numTA = 0, numTC = 0, numTG = 0, numTT = 0;
+	totalChars = 0;
+	totalBigrams = 0;
+	totalLineLength = 0, totalLineCount = 0;
+	lineLengthMean = 0, lineVariance = 0, lineStdDeviation = 0;
+	GaussDistr = 0;
+
+	fullFileText = "";
 }
