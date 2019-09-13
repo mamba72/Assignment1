@@ -35,78 +35,93 @@ ifstream inputFile;
 
 int main(int argc, char** argv)
 {
+	srand(time(NULL));
+
 	//check to make sure that the user has given two inputs (including the argument to run the file itself)
-	if (argc != 2)
-	{
-		cout << "You must enter a file name.\n";
-		return 1;
-	}
+	//if (argc != 2)
+	//{
+		//cout << "You must enter a file name.\n";
+		//return 1;
+	//}
 
 	//read the file and get the string of the contents
 	//fullFileText = ReadFile(argv[1]);
 
-	
+	char stay = 'y';
 
-	//open the file that was provided
-	inputFile.open(argv[1]);
-
-	//check to make sure that we can open the file in the first place
-	if (!inputFile)
+	while (stay == 'y')
 	{
-		cout << "We were unable to open that file.\nTry a different one or close it before asking us to open it.\n";
-		exit(1);
+
+		string enteredFileName;
+		cout << "Enter a file name to analyze:\n";
+		cin >> enteredFileName;
+
+		//open the file that was provided
+		inputFile.open(enteredFileName);
+
+		//check to make sure that we can open the file in the first place
+		if (!inputFile)
+		{
+			cout << "We were unable to open that file.\nTry a different one or close it before asking us to open it.\n";
+			exit(1);
+		}
+
+		string fullFileText;
+		string fileLine;
+		//go through the file getting each line one at a time and adding them to the full string
+		while (std::getline(inputFile, fileLine))
+		{
+			totalLineCount++;
+			fullFileText = fullFileText + fileLine + "\n";
+
+			CountIndividualChars(fileLine);
+			CountBigrams(fileLine);
+
+		}
+
+		//make every letter lower case
+		string lowerFileText;
+		for (int i = 0; i < fullFileText.length(); ++i)
+		{
+			lowerFileText += tolower(fullFileText[i]);
+		}
+
+		inputFile.close();
+		//set the text to all lower case
+		fullFileText = lowerFileText;
+
+		//check to make sure that there is an even number of characters. if its odd, then skip the last one.
+		if (totalChars % 2 != 0)
+		{
+			totalChars--;
+		}
+
+
+
+		//calculate the mean length of each string
+		lineLengthMean = totalChars / totalLineCount;
+
+		//total line length = total chars
+		totalLineLength = totalChars;
+
+		//calculate the variance of the line lengths
+		lineVariance = CalcVariance(enteredFileName);
+
+		//calculate gaussian / normal distribution
+		GaussDistr = CalcGaussianDistribution(lineLengthMean, lineVariance);
+
+		cout << "GaussDistr: " << GaussDistr << endl;
+
+		//print everything
+		//PrintSummary();
+
+		OutputToFile("StephenWhite.txt");
+
+		cout << "Would you like to go again? (y or n)" << endl;
+		cin >> stay;
+		
 	}
-
-	string fullFileText;
-	string fileLine;
-	//go through the file getting each line one at a time and adding them to the full string
-	while (std::getline(inputFile, fileLine))
-	{
-		totalLineCount++;
-		fullFileText = fullFileText + fileLine + "\n";
-
-		CountIndividualChars(fileLine);
-		CountBigrams(fileLine);
-
-	}
-
-	//make every letter lower case
-	string lowerFileText;
-	for (int i = 0; i < fullFileText.length(); ++i)
-	{
-		lowerFileText += tolower(fullFileText[i]);
-	}
-
-	inputFile.close();
-	//set the text to all lower case
-	fullFileText = lowerFileText;
-
-	//check to make sure that there is an even number of characters. if its odd, then skip the last one.
-	if (totalChars % 2 != 0)
-	{
-		totalChars--;
-	}
-
-
-	//calculate the mean length of each string
-	lineLengthMean = totalChars / totalLineCount;
-
-	//total line length = total chars
-	totalLineLength = totalChars;
-
-	//calculate the variance of the line lengths
-	lineVariance = CalcVariance(argv[1]);
-	
-	//calculate gaussian / normal distribution
-	GaussDistr = CalcGaussianDistribution(lineLengthMean, lineVariance);
-
-	cout << "GaussDistr: " << GaussDistr << endl;
-
-	//print everything
-	//PrintSummary();
-
-	OutputToFile("StephenWhite.txt");
-
+	cout << "Goodbye!!!!\n";
 	return 0;
 }
 
@@ -294,7 +309,7 @@ float CalcVariance(string fileName)
 //calculate the gaussian / normal distribution from the given hint
 float CalcGaussianDistribution(float mean, float variance)
 {
-	srand(time(NULL));
+	
 
 	float a = (float)rand() / (float)RAND_MAX;
 	float b = (float)rand() / (float)RAND_MAX;
@@ -341,15 +356,34 @@ void OutputToFile(string fileName)
 
 	outFile << endl << endl;
 
+	float aProb = ((float)numA / (float)totalChars);
+	float cProb = ((float)numC / (float)totalChars);
+	float gProb = ((float)numG / (float)totalChars);
+	float tProb = ((float)numT / (float)totalChars);
+
 	//write the 1000 lines of stuff
-	for (int i = 0; i < 10000; ++i)
+	for (int i = 0; i < 1000; ++i)
 	{
 		float gauss = CalcGaussianDistribution(lineLengthMean, lineVariance);
-		string line = "";
-		for (int index = 0; index < gauss; ++i)
-		{
+		//find out how many of each nucleotide we need
+		int neededA = gauss * aProb;
+		int neededC = gauss * cProb;
+		int neededG = gauss * gProb;
+		int neededT = gauss * tProb;
 
-		}
+		//now construct the line
+		string line = "";
+		
+		for (int aIndex = 0; aIndex < neededA; ++aIndex)
+			line += "a";
+		for (int cIndex = 0; cIndex < neededC; ++cIndex)
+			line += "c";
+		for (int gIndex = 0; gIndex < neededG; ++gIndex)
+			line += "g";
+		for (int tIndex = 0; tIndex < neededT; ++tIndex)
+			line += "t";
+
+		outFile << line << endl;
 	}
 
 
