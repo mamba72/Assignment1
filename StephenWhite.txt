@@ -1,0 +1,24 @@
+Stephen White
+002323381
+Data Structures Section 1
+Assignment 1: C++ Review
+
+Total Number of characters: 84
+Total number of bigrams: 39
+Total number of lines: 10
+Total length of lines: 84
+Total number of A's: 22	C's: 24	G's:19	T's:19
+Total number of AA's: 3	AC's: 3	AG's: 2	AT's: 3
+Total number of CA's: 3	CC's: 2	CG's: 2	CT's: 7
+Total number of GA's: 3	GC's: 3	GG's: 1	GT's: 2
+Total number of TA's: 1	TC's: 1	TG's: 2	TT's: 1
+Average line length: 8
+Line length variance: 5.66667
+Standard deviatoin: 2.38048
+Probability of A: 0.261905	C:0.285714	G:0.22619	T:0.22619
+Probability of AA: 0.0357143	AC:0.0357143	AG:0.0238095	AT:0.0357143
+Probability of CA: 0.0357143	CC:0.0238095	CG:0.0238095	CT:0.0833333
+Probability of GA: 0.0357143	GC:0.0357143	GG:0.0119048	GT:0.0238095
+Probability of TA: 0.0119048	TC:0.0119048	TG:0.0238095	TT:0.0119048
+
+

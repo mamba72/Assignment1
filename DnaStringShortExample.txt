@@ -1,10 +1,10 @@
 ataccaa
-tgaactt
-aagcgaa
-cgccctg
+tgaactg
+aagcgaagca
+cgccctgtgc
 gtcatat
-cccggga
+cccgg
 tgctggc
-atacctg
-ctactta
-atgaagc
+atacctgactg
+ctacttaatc
+atgaagctgc
