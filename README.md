@@ -1,6 +1,10 @@
 # Assignment1
 DNA string analyzer
 
+Stephen White
+002323381
+9-14-19
+
 Sources:
 1. I got my random DNA sequences from this website https://www.bioinformatics.org/sms2/random_dna.html
 2. http://www.fredosaurus.com/notes-cpp/io/readtextfile.html
@@ -10,4 +14,6 @@ Sources:
 6. https://stackoverflow.com/questions/1727881/how-to-use-the-pi-constant-in-c
 7. https://stackoverflow.com/questions/9459035/why-does-rand-yield-the-same-sequence-of-numbers-on-every-run
 8. https://stackoverflow.com/questions/8364597/shuffling-string
-9. 
+9. Arshia Behzad
+10. Brinly Xavier
+11. Joely Fontana

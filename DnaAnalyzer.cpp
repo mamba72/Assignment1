@@ -93,6 +93,10 @@ int main(int argc, char** argv)
 			cin >> enteredFileName;
 			continue;
 		}
+		else if (totalLineCount == 1)
+		{
+			cout << "CAUTION: your file only has one line. \nThis often times results in invalid probabilities, but I will do my best." << endl;
+		}
 
 		//make every letter lower case
 		string lowerFileText;
@@ -185,7 +189,7 @@ void CountBigrams(string fileText)
 	//count every pair of nucleotides (bigrams)
 	for (int i = 0; i < totalChars; i += 2)
 	{
-		//cout << "I = " << i << endl;
+		//this was the most effective way I could find to concatinate two chars to a string
 		string currentPair = " ";
 		currentPair = string(1, fileText[i]);
 		currentPair += string(1, fileText[i + 1]);
@@ -278,11 +282,6 @@ float CalcGaussianDistribution(float mean, float variance)
 //Write all the stuffs to file
 void OutputToFile(string fileInputName)
 {
-	/*
-	outFile.open(fileName);
-
-	outFile << "Stephen White\n002323381\nData Structures Section 1\nAssignment 1: C++ Review" << endl <<endl;
-	*/
 	//print the name of the file thats being read to better be able to separate the sections in the output file
 	outFile << "File being analyzed: " << fileInputName << endl;
 
@@ -312,6 +311,8 @@ void OutputToFile(string fileInputName)
 
 	outFile << endl << endl;
 
+	//calculate the probability of each character
+
 	float aProb = ((float)numA / (float)totalChars);
 	float cProb = ((float)numC / (float)totalChars);
 	float gProb = ((float)numG / (float)totalChars);
@@ -329,7 +330,7 @@ void OutputToFile(string fileInputName)
 
 		//now construct the line
 		string line = "";
-		
+		//add the calculated number of letters to the string
 		for (int aIndex = 0; aIndex < neededA; ++aIndex)
 			line += "a";
 		for (int cIndex = 0; cIndex < neededC; ++cIndex)
@@ -339,11 +340,12 @@ void OutputToFile(string fileInputName)
 		for (int tIndex = 0; tIndex < neededT; ++tIndex)
 			line += "t";
 
+		//shuffle up the string so it isnt just a's c's and t's in order
 		random_shuffle(line.begin(), line.end());
-
+		// print that constructed string to the outfile
 		outFile << line << endl;
 	}
-
+	//put a few more lines so it is easier to tell the difference between files
 	outFile << endl << endl << endl;
 
 
