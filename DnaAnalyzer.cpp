@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES //allows me to use the definition of PI from math.h
 #include <math.h>
 #include <time.h>
+#include <algorithm>
 using namespace std;
 
 //string ReadFile(string fileName);
@@ -337,6 +338,8 @@ void OutputToFile(string fileInputName)
 			line += "g";
 		for (int tIndex = 0; tIndex < neededT; ++tIndex)
 			line += "t";
+
+		random_shuffle(line.begin(), line.end());
 
 		outFile << line << endl;
 	}
