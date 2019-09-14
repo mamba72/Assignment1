@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 	//this ensures that the random numbers generated are actually random, otherwise they would be consistent within runs
 	srand(time(NULL));
 
-	outFile.open("StephenWhite.txt");
+	outFile.open("StephenWhite.out");
 
 	outFile << "Stephen White\n002323381\nData Structures Section 1\nAssignment 1: C++ Review" << endl << endl;
 

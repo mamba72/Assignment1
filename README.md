@@ -1,11 +1,25 @@
 # Assignment1
 DNA string analyzer
 
-Stephen White
-002323381
-9-14-19
+1. Indentifying Info
+	a. Stephen White
+	b. 002323381
+	c. stwhite@chapman.edu
+	e. Assignment Number: 02
 
-Sources:
+2. Source Files:
+	a. DnaAnalyzer.cpp
+	b. DnaAnalyzer.out
+	c. DnaStringEmpty.txt
+	d. DnaStringsExample.txt
+	e. DnaStringShortExample.txt
+	f. DnaStringSingleLine.txt
+	g. StephenWhite.out
+
+3. Known errors:
+	a. Inputting a file with one line results in unstable probabilities, but this is expected (especially given the math)
+
+References:
 1. I got my random DNA sequences from this website https://www.bioinformatics.org/sms2/random_dna.html
 2. http://www.fredosaurus.com/notes-cpp/io/readtextfile.html
 3. http://www.cplusplus.com/forum/general/179626/
@@ -17,3 +31,7 @@ Sources:
 9. Arshia Behzad
 10. Brinly Xavier
 11. Joely Fontana
+
+5. Instructions:
+	a. ./DnaAnalyzer.out *a text file name*
+	b. follow the prompts
