@@ -5,11 +5,7 @@
 #include <time.h>
 using namespace std;
 
-
-//#define M_PI
-
-string ReadFile(string fileName);
-string PrintSummary();
+//string ReadFile(string fileName);
 void CountIndividualChars(string fileText);
 void CountBigrams(string fileText);
 float CalcVariance(string fileName);
@@ -37,30 +33,29 @@ ofstream outFile;
 
 int main(int argc, char** argv)
 {
+
+	if (argc != 2)
+	{
+		cout << "You did not enter a file Name." << endl;
+		cout << "Ensure that you enter a second argument that is the text file that you want to open." << endl;
+		exit(1);
+	}
+
+	//this ensures that the random numbers generated are actually random, otherwise they would be consistent within runs
 	srand(time(NULL));
-
-	//check to make sure that the user has given two inputs (including the argument to run the file itself)
-	//if (argc != 2)
-	//{
-		//cout << "You must enter a file name.\n";
-		//return 1;
-	//}
-
-	//read the file and get the string of the contents
-	//fullFileText = ReadFile(argv[1]);
 
 	outFile.open("StephenWhite.txt");
 
 	outFile << "Stephen White\n002323381\nData Structures Section 1\nAssignment 1: C++ Review" << endl << endl;
 
 	char stay = 'y';
+	string enteredFileName;
+	enteredFileName = argv[1];
 
+	
+	//the while loop that allows the user to input multiple files
 	while (stay == 'y')
-	{
-
-		string enteredFileName;
-		cout << "Enter a file name to analyze:\n";
-		cin >> enteredFileName;
+	{	
 
 		//open the file that was provided
 		inputFile.open(enteredFileName);
@@ -69,6 +64,8 @@ int main(int argc, char** argv)
 		if (!inputFile)
 		{
 			cout << "We were unable to open that file.\nTry a different one or close it before asking us to open it.\n";
+			cout << "Enter a file name to analyze:\n";
+			cin >> enteredFileName;
 			continue;
 		}
 
@@ -80,9 +77,20 @@ int main(int argc, char** argv)
 			totalLineCount++;
 			fullFileText = fullFileText + fileLine + "\n";
 
+			//now count the bigrams and characters in the line
 			CountIndividualChars(fileLine);
 			CountBigrams(fileLine);
 
+		}
+
+		//check to see if the file is not empty
+		if (totalLineCount == 0)
+		{
+			inputFile.close();
+			cout << "That file was empty. Please choose a different file." << endl;
+			cout << "Enter a file name to analyze:\n";
+			cin >> enteredFileName;
+			continue;
 		}
 
 		//make every letter lower case
@@ -116,11 +124,7 @@ int main(int argc, char** argv)
 		//calculate gaussian / normal distribution
 		GaussDistr = CalcGaussianDistribution(lineLengthMean, lineVariance);
 
-		cout << "GaussDistr: " << GaussDistr << endl;
-
-		//print everything
-		//PrintSummary();
-
+		//print everything to the file
 		OutputToFile(enteredFileName);
 
 		cout << "Would you like to go again? (y or n)" << endl;
@@ -129,83 +133,19 @@ int main(int argc, char** argv)
 		//to ensure that the amounts counted from the previous run are not carried over into the next
 		ResetCounterVars();
 
+		if (stay == 'y')
+		{
+			cout << "Enter a file name to analyze:\n";
+			cin >> enteredFileName;
+		}
+
 	}
 	cout << "Goodbye!!!! :)\n";
+	outFile.close();
 	return 0;
 }
 
 //FUNCTIONS:
-
-//this function will read the text file and return the string contents of the file
-//this function will ensure that the text is lowercase
-string ReadFile(string fileName)
-{
-	//this is the variable 
-	ifstream inputFile;
-
-	//open the file that was provided
-	inputFile.open(fileName);
-
-	//check to make sure that we can open the file in the first place
-	if (!inputFile)
-	{
-		cout << "We were unable to open that file.\nTry a different one or close it before asking us to open it.\n";
-		exit(1);
-	}
-
-	string fullFileText;
-	string fileLine;
-	//go through the file getting each line one at a time and adding them to the full string
-	while (std::getline(inputFile, fileLine))
-	{
-		totalLineCount++;
-		fullFileText = fullFileText + fileLine + "\n";
-	}
-
-	//make every letter lower case
-	string lowerFileText;
-	for (int i = 0; i < fullFileText.length(); ++i)
-	{
-		lowerFileText += tolower(fullFileText[i]);
-	}
-
-	inputFile.close();
-
-	return lowerFileText;
-}
-
-//this will write everything to a file
-void WriteToFile()
-{
-
-}
-
-//prints the summary of the statistics
-string PrintSummary()
-{
-	cout << "Total Number of characters: " << totalChars << endl;
-	cout << "Total number of bigrams: " << totalBigrams <<endl;
-	cout << "Total number of lines: " << totalLineCount << endl;
-	cout << "Total length of lines: " << totalLineLength <<endl;
-	cout << "Total number of A\'s: " << numA;
-	cout << "\tC\'s: " << numC;
-	cout << "\tG\'s:" << numG;
-	cout << "\tT\'s:" << numT << endl;
-
-	cout << "Total number of AA's: " << numAA << "\tAC's: " << numAC << "\tAG's: " << numAG << "\tAT's: " << numAT << endl;
-	cout << "Total number of CA's: " << numCA << "\tCC's: " << numCC << "\tCG's: " << numCG << "\tCT's: " << numCT << endl;
-	cout << "Total number of GA's: " << numGA << "\tGC's: " << numGC << "\tGG's: " << numGG << "\tGT's: " << numGT << endl;
-	cout << "Total number of TA's: " << numTA << "\tTC's: " << numTC << "\tTG's: " << numTG << "\tTT's: " << numTT << endl;
-
-	cout << "Average line length: " << lineLengthMean << endl;
-	cout << "Line length variance: " << lineVariance << endl;
-	cout << "Standard deviatoin: " << lineStdDeviation << endl;
-
-	//finally print it
-
-	cout << "Done\n";
-	
-}
 
 //counts the individual chars of the given string
 void CountIndividualChars(string fileText)
@@ -248,8 +188,6 @@ void CountBigrams(string fileText)
 		string currentPair = " ";
 		currentPair = string(1, fileText[i]);
 		currentPair += string(1, fileText[i + 1]);
-
-		//cout << "Current Pair: " << currentPair << endl;
 
 		if (currentPair == "aa")
 			numAA++;
@@ -294,6 +232,12 @@ void CountBigrams(string fileText)
 //this function will return the variance of the length of each line.
 float CalcVariance(string fileName)
 {
+	//if the file only has 1 line, the variation is zero
+	if (totalLineCount == 1)
+	{
+		return 0;
+	}
+
 	//open up the file again
 	inputFile.open(fileName);
 
@@ -318,8 +262,7 @@ float CalcVariance(string fileName)
 //calculate the gaussian / normal distribution from the given hint
 float CalcGaussianDistribution(float mean, float variance)
 {
-	
-
+	//generate my normalized random numbers
 	float a = (float)rand() / (float)RAND_MAX;
 	float b = (float)rand() / (float)RAND_MAX;
 
@@ -361,10 +304,10 @@ void OutputToFile(string fileInputName)
 	outFile << "Standard deviation: " << lineStdDeviation << endl;
 
 	outFile << "Probability of A: " << ((float)numA / (float)totalChars) << "\tC:" << ((float)numC / (float)totalChars) << "\tG:" << ((float)numG / (float)totalChars) << "\tT:" << ((float)numT / (float)totalChars) << endl;
-	outFile << "Probability of AA: " << ((float)numAA / (float)totalChars) << "\tAC:" << ((float)numAC / (float)totalChars) << "\tAG:" << ((float)numAG / (float)totalChars) << "\tAT:" << ((float)numAT / (float)totalChars) << endl;
-	outFile << "Probability of CA: " << ((float)numCA / (float)totalChars) << "\tCC:" << ((float)numCC / (float)totalChars) << "\tCG:" << ((float)numCG / (float)totalChars) << "\tCT:" << ((float)numCT / (float)totalChars) << endl;
-	outFile << "Probability of GA: " << ((float)numGA / (float)totalChars) << "\tGC:" << ((float)numGC / (float)totalChars) << "\tGG:" << ((float)numGG / (float)totalChars) << "\tGT:" << ((float)numGT / (float)totalChars) << endl;
-	outFile << "Probability of TA: " << ((float)numTA / (float)totalChars) << "\tTC:" << ((float)numTC / (float)totalChars) << "\tTG:" << ((float)numTG / (float)totalChars) << "\tTT:" << ((float)numTT / (float)totalChars) << endl;
+	outFile << "Probability of AA: " << ((float)numAA / (float)totalBigrams) << "\tAC:" << ((float)numAC / (float)totalBigrams) << "\tAG:" << ((float)numAG / (float)totalBigrams) << "\tAT:" << ((float)numAT / (float)totalBigrams) << endl;
+	outFile << "Probability of CA: " << ((float)numCA / (float)totalBigrams) << "\tCC:" << ((float)numCC / (float)totalBigrams) << "\tCG:" << ((float)numCG / (float)totalBigrams) << "\tCT:" << ((float)numCT / (float)totalBigrams) << endl;
+	outFile << "Probability of GA: " << ((float)numGA / (float)totalBigrams) << "\tGC:" << ((float)numGC / (float)totalBigrams) << "\tGG:" << ((float)numGG / (float)totalBigrams) << "\tGT:" << ((float)numGT / (float)totalBigrams) << endl;
+	outFile << "Probability of TA: " << ((float)numTA / (float)totalBigrams) << "\tTC:" << ((float)numTC / (float)totalBigrams) << "\tTG:" << ((float)numTG / (float)totalBigrams) << "\tTT:" << ((float)numTT / (float)totalBigrams) << endl;
 
 	outFile << endl << endl;
 

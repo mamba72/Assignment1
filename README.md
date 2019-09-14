@@ -9,4 +9,5 @@ Sources:
 5. http://www.cplusplus.com/doc/tutorial/files/
 6. https://stackoverflow.com/questions/1727881/how-to-use-the-pi-constant-in-c
 7. https://stackoverflow.com/questions/9459035/why-does-rand-yield-the-same-sequence-of-numbers-on-every-run
-8. 
+8. https://stackoverflow.com/questions/8364597/shuffling-string
+9. 
